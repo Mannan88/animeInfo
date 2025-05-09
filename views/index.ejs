@@ -1,0 +1,16 @@
+<%- include("partials/header.ejs") %>
+<body>
+    <h1>Welcome to AnimeInfo</h1>
+    <form action="/searchanime" method="post">
+        <input type="text" name="animeId" placeholder="Search by Id">
+        <input type="hidden" name="search" value="animeId">  
+        <button type="submit">Search by ID</button>
+    </form>
+    
+    <form action="/searchanime" method="post">
+        <input type="text" name="animeName" placeholder="Search by name">
+        <input type="hidden" name="search" value="animeName">  
+        <button type="submit">Search by Name</button>
+    </form>
+
+</body>
