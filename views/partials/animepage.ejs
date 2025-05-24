@@ -6,30 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="animePage.css" , rel=" stylesheet">
 </head>
-
 <body>
-    <% if(anime==null){ %>
-        <h2> No anime found.</h2>
-        <% } else { %>
-        <!-- title -->
-        <h3>anime name:</h3>
-        <h1>
-         <%= anime.title.english %>
-        </h1>
-        <!-- cover image -->
-        <h3>cover image</h3>
+    <% if (anime == null) { %>
+        <h2>No anime found.</h2>
+    <% } else { %>
+        <!-- Title -->
+        <h3>Anime Name:</h3>
+        <h1><%= anime.title.english %></h1>
+
+        <!-- Cover Image -->
+        <h3>Cover Image</h3>
         <img src="<%= anime.coverImage.large %>" alt="Anime Cover">
-         <% } %>
-        <!-- description -->
+
+        <!-- Description -->
         <p><%= anime.description %></p>
-        <!-- number of episodes -->
-         <h3>Number of episodes: <%= anime.episodes %> </h3>
-        <!-- studio names -->
-        <h3> produced by studios</h3>
+
+        <!-- Number of Episodes -->
+        <h3>Number of episodes: <%= anime.episodes %></h3>
+
+        <!-- Studio Names -->
+        <h3>Produced by studios</h3>
         <ul>
             <% anime.studios.edges.forEach(studio => { %>
-                <li> <%= studio.node.name %> </li>
-             
-            <% }) %>
+                <li><%= studio.node.name %></li>
+            <% }); %>
         </ul>
+    <% } %>
 </body>

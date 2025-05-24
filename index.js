@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
     res.render("index.ejs");
 });
 
-app.get("/anime/:query", async (req, res) => {
+app.get("/anime/list/:query", async (req, res) => {
     const query = req.params.query;
     try {
         let data;
@@ -22,15 +22,29 @@ app.get("/anime/:query", async (req, res) => {
             data = await fetchAnimeByName(query);
         }
         if (!data) {
-            res.render('partials/animepage.ejs', {
+            res.render('searchresult.ejs', {
                 anime: null
             })
         }
         else {
-            res.render('partials/animepage.ejs', {
+            res.render('searchresult.ejs', {
                 anime: data
             })
         }
+    } catch (error) {
+        console.log("Error fetching anime:", error.message);
+        res.status(500).send("Server error while fetching anime.");
+    }
+});
+
+app.get("/anime/:query", async (req, res) => {
+       const query = parseInt(req.params.query);
+    console.log(query)
+    try {
+        let data = await fetchAnimeById(query);
+        res.render('partials/animepage.ejs',{
+            anime : data
+        })
     } catch (error) {
         console.log("Error fetching anime:", error.message);
         res.status(500).send("Server error while fetching anime.");
@@ -41,10 +55,10 @@ app.get("/anime/:query", async (req, res) => {
 app.post("/searchanime", async (req, res, next) => {
     const { search, animeId, animeName } = req.body;
     if (search === 'animeId') {
-        res.redirect(`/anime/${animeId}`);
+        res.redirect(`/anime/list/${animeId}`);
     }
     else if (search === 'animeName') {
-        res.redirect(`/anime/${animeName}`);
+        res.redirect(`/anime/list/${animeName}`);
     }
     else {
         return res.status(400).send("Invalid action");
@@ -54,7 +68,8 @@ app.post("/searchanime", async (req, res, next) => {
 const fetchAnimeByName = async (animeName) => {
     const query = `
    query ($search: String) {
-  Media(search: $search, type: ANIME) {
+   Page(perPage: 10){
+  media(search: $search, type: ANIME) {
     id
     title {
       romaji
@@ -74,7 +89,7 @@ const fetchAnimeByName = async (animeName) => {
            name
           }
         } 
-    }
+}}
   }
 }`
     const variables = {
@@ -92,8 +107,8 @@ const fetchAnimeByName = async (animeName) => {
                 'Accept': 'application/json'
             }
         });
-        console.log(response.data.data.Media)
-        return response.data.data.Media;
+        console.log(response.data.data.Page.media)
+        return response.data.data.Page.media;
     } catch (error) {
         console.error("Error fetching data:", error.response?.data || error.message);
     }

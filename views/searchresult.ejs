@@ -1,0 +1,21 @@
+<%- include('partials/header.ejs') %>
+
+<body>
+    <% if(anime==null){ %>
+        <h2> No anime found.</h2>
+        <% } else { %>
+        <% anime.forEach(anime => { %>
+                 <!-- title -->
+        <a href="/anime/<%= anime.id %>">
+        <h3>anime name:</h3>
+        <h1>
+         <%= anime.title.english %>
+        </h1>
+        <!-- cover image -->
+        <h3>cover image</h3>
+        <img src="<%= anime.coverImage.large %>" alt="Anime Cover">
+        <% }) %>
+
+         <% } %>
+    </a>
+</body>
