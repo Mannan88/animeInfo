@@ -21,7 +21,16 @@ app.get("/anime/:query", async (req, res) => {
         } else {
             data = await fetchAnimeByName(query);
         }
-        res.json(data);
+        if (!data) {
+            res.render('partials/animepage.ejs', {
+                anime: null
+            })
+        }
+        else {
+            res.render('partials/animepage.ejs', {
+                anime: data
+            })
+        }
     } catch (error) {
         console.log("Error fetching anime:", error.message);
         res.status(500).send("Server error while fetching anime.");
@@ -52,6 +61,20 @@ const fetchAnimeByName = async (animeName) => {
       english
       native
     }
+    coverImage{
+      large
+      medium
+    }
+    description,
+    episodes,
+    studios{
+      edges{
+         node{
+           id
+           name
+          }
+        } 
+    }
   }
 }`
     const variables = {
@@ -59,7 +82,7 @@ const fetchAnimeByName = async (animeName) => {
     };
     console.log("Sending request with:", JSON.stringify({ query, variables }, null, 2));
     try {
-        
+
         const response = await axios.post(url, {
             query: query,
             variables: variables
@@ -71,7 +94,7 @@ const fetchAnimeByName = async (animeName) => {
         });
         console.log(response.data.data.Media)
         return response.data.data.Media;
-    }catch (error) {
+    } catch (error) {
         console.error("Error fetching data:", error.response?.data || error.message);
     }
 }
@@ -85,6 +108,21 @@ query ($id: Int) {
       romaji
       english
       native
+    }
+    coverImage{
+      large
+      medium
+    }
+      
+    description,
+    episodes,
+    studios{
+      edges{
+         node{
+           id
+           name
+          }
+        } 
     }
   }
 }`;
