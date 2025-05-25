@@ -1,0 +1,37 @@
+body{
+    font-family: monospace;
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+.container{
+    margin: 0 3em;
+    margin-top: 65px;
+    
+    padding: 1em 1em;
+    display:grid;
+    grid-template-columns: 1fr, 1fr;
+    gap:1em;
+}
+
+.titlecover{
+    grid-column: 1/2;
+}
+#title{
+    font-size: 50px;
+}
+
+.image{
+    margin:2em 4em;
+    width:39em;
+    height:52em;
+}
+.anime-info{
+    grid-column: 2/3;
+}
+.description{
+    font-size: 20px;
+    display: flex;
+    text-align: justify;
+  
+}

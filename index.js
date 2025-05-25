@@ -42,7 +42,7 @@ app.get("/anime/:query", async (req, res) => {
     console.log(query)
     try {
         let data = await fetchAnimeById(query);
-        res.render('partials/animepage.ejs',{
+        res.render('animepage.ejs',{
             anime : data
         })
     } catch (error) {
