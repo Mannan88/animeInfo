@@ -68,7 +68,7 @@ app.post("/searchanime", async (req, res, next) => {
 const fetchAnimeByName = async (animeName) => {
     const query = `
    query ($search: String) {
-   Page(perPage: 10){
+   Page(perPage: 20){
   media(search: $search, type: ANIME) {
     id
     title {

@@ -1,21 +1,27 @@
 <%- include('partials/header.ejs') %>
 
+    <head lang="en">
+        <title>AnimeInfo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="/searchresult.css" rel="stylesheet">
+        <link href="/header.css" rel="stylesheet">
+    </head>
 <body>
-    <% if(anime==null){ %>
-        <h2> No anime found.</h2>
-        <% } else { %>
-        <% anime.forEach(anime => { %>
-                 <!-- title -->
-        <a href="/anime/<%= anime.id %>">
-        <h3>anime name:</h3>
-        <h1>
-         <%= anime.title.english %>
-        </h1>
-        <!-- cover image -->
-        <h3>cover image</h3>
-        <img src="<%= anime.coverImage.large %>" alt="Anime Cover">
-        <% }) %>
-
+   <div class="container">
+      <% if(anime==null){ %>
+      <h2> No anime found.</h2>
+      <% } else { %>
+      <% anime.forEach(anime=> { %>
+      <div class="anime-card">
+         <a href="/anime/<%= anime.id %>">
+            <img src="<%= anime.coverImage.large %>" alt="Anime Cover">
+            <h1>
+               <%= anime.title.english %>
+            </h1>
+         </a> </div>
+         <% }) %>
          <% } %>
-    </a>
+     
+   </div>
 </body>
