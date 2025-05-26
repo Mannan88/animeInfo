@@ -77,6 +77,7 @@ const fetchAnimeByName = async (animeName) => {
       native
     }
     coverImage{
+      extraLarge
       large
       medium
     }

@@ -5,9 +5,9 @@ body{
     box-sizing: border-box;
 }
 .container{
-    margin: 0 3em;
+    min-height: 100dvh;
     margin-top: 65px;
-    
+    background: linear-gradient(45deg,rgba(4, 14, 71, 0.9),rgba(0,8,51,0.9));
     padding: 1em 1em;
     display:grid;
     grid-template-columns: 1fr, 1fr;
@@ -19,19 +19,35 @@ body{
 }
 #title{
     font-size: 50px;
+    color:rgb(238, 243, 243)
 }
 
 .image{
     margin:2em 4em;
-    width:39em;
-    height:52em;
+    width:36em;
+    height:48em;
+    border: 2px solid rgb(214, 217, 243);
+    border-radius: 2em;
+}
+
+.anime-details{
+    background: linear-gradient(45deg , rgba(238, 238, 238, 0.3),rgba(251, 251, 251, 0.3));
+    border:2px solid white;
+    padding:1em 2em;
+    border-radius: 2em;
 }
 .anime-info{
     grid-column: 2/3;
+    margin-right:6em;
 }
 .description{
+    color:rgb(238, 243, 243);
     font-size: 20px;
     display: flex;
     text-align: justify;
   
+}
+.episodes{
+    font-weight: bold;
+    font-size: 2em;
 }

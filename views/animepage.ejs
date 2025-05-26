@@ -26,14 +26,17 @@
                         <h1 id="title">
                             <%= anime.title.english %>
                         </h1>
-                        <!-- Description -->
-                        <p class="description">
-                            <%= anime.description %>
-                        </p>
+                        <div class="anime-details">
 
-                        <!-- Number of Episodes -->
-                        <h3 class="description">Number of episodes: <%= anime.episodes %>
+                         <!-- Number of Episodes -->
+                        <h3 class="description episodes">Number of episodes: <%= anime.episodes %>
                         </h3>
+
+                        <!-- Description -->
+                        <p class="description ">
+                            <%- anime.description %>
+                        </p>
+                        </div>
 
                         <!-- Studio Names -->
                     </div>
