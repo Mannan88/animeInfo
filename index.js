@@ -1,6 +1,8 @@
 import express from 'express'
 import axios from 'axios'
 import bodyParser from 'body-parser';
+import pg from 'pg';
+
 
 const app = express();
 const port = 3000;
@@ -8,9 +10,22 @@ const url = "https://graphql.anilist.co";
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+const db = new pg.Client({
+  user:'postgres',
+  host:'localhost',
+  password:'Mannan-2005',
+  database: 'anime',
+  port:5432
+});
+
+db.connect()
+
+let watched_anime = [];
+
 app.get("/", (req, res) => {
     res.render("index.ejs");
 });
+
 
 app.get("/anime/list/:query", async (req, res) => {
     const query = req.params.query;
@@ -64,6 +79,31 @@ app.post("/searchanime", async (req, res, next) => {
         return res.status(400).send("Invalid action");
     }
 })
+
+
+app.post("/add", async (req, res, next) => {
+    try {
+        const anime_Id = req.body; 
+        const result = await db.query("SELECT anime_id FROM watched_anime");
+        let watched_anime = result.rows.map((anime) => anime.anime_id);
+        console.log(anime_Id);
+        const check_anime = await db.query("SELECT anime_id FROM watched_anime WHERE anime_id = $1", [anime_Id.animeId]);
+        console.log(check_anime.rows);
+        if (check_anime.rows.length > 0) {
+            console.log("Anime already exists in watched list:", check_anime.rows);
+            return res.status(200)
+        } else {
+            await db.query("INSERT INTO watched_anime (anime_id) VALUES ($1)", [anime_Id.animeId]); 
+            console.log("Successfully inserted", anime_Id.animeId);
+        }
+
+            res.redirect(`/anime/${anime_Id.animeId}`);
+
+    } catch (error) {
+        console.error("Error handling /add request:", error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
 
 const fetchAnimeByName = async (animeName) => {
     const query = `

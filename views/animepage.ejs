@@ -1,45 +1,45 @@
 <!DOCTYPE html>
-
 <head lang="en">
-    <title>AnimeInfo</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="/animepage.css" rel="stylesheet">
-    <link href="/header.css" rel="stylesheet">
+  <title>AnimeInfo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/animepage.css" rel="stylesheet">
+  <link href="/header.css" rel="stylesheet">
 </head>
-
 <body>
-
-    <%- include('partials/header.ejs') %>
-        <div class="container">
-            <% if (anime==null) { %>
-                <h2>No anime found.</h2>
-                <% } else { %>
-                    <!-- Title -->
-                    <div class="titlecover">
-                        <!-- Cover Image -->
-                         <div class="cover-image">
-                        <img class="image" src="<%= anime.coverImage.large %>" alt="Anime Cover"></div>
-                    </div>
-
-                    <div class="anime-info">
-                        <h1 id="title">
-                            <%= anime.title.english %>
-                        </h1>
-                        <div class="anime-details">
-
-                         <!-- Number of Episodes -->
-                        <h3 class="description episodes">Number of episodes: <%= anime.episodes %>
-                        </h3>
-
-                        <!-- Description -->
-                        <p class="description ">
-                            <%- anime.description %>
-                        </p>
-                        </div>
-
-                        <!-- Studio Names -->
-                    </div>
-                    <% } %>
-        </div>
+  <%- include('partials/header.ejs') %>
+  <div class="container">
+    <% if (anime==null) { %>
+    <h2>No anime found.</h2>
+    <% } else { %>
+    <!-- Title -->
+    <div class="titlecover">
+      <!-- Cover Image -->
+      <div class="cover-image">
+        <img class="image" src="<%= anime.coverImage.large %>" alt="Anime Cover">
+      </div>
+    </div>
+    <div class="anime-info">
+      <h1 id="title">
+        <%= anime.title.english %>
+      </h1>
+      <div class="anime-details">
+        <!-- Number of Episodes -->
+        <h3 class="description episodes">Number of episodes: <%= anime.episodes %>
+        </h3>
+        <!-- Description -->
+        <p class="description ">
+          <%- anime.description %>
+        </p>
+      </div>
+      <!-- Studio Names -->
+    </div>
+    <form id="favForm" action="/add" method="POST">
+      <input type="hidden" name="animeId" value="<%= anime.id %>">
+      <button type="submit" id="favButton">
+      <%= anime.isFavorite ? 'Remove from Favorites' : 'Add to Favorites' %>
+      </button>
+    </form>
+    <% } %>
+  </div>
 </body>
