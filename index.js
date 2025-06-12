@@ -3,15 +3,29 @@ import axios from 'axios'
 import bodyParser from 'body-parser';
 import pg from 'pg';
 import env from "dotenv"
-
+import passport from 'passport';
+import bcrypt from "bcrypt"
+import session from 'express-session';
 
 const app = express();
 const port = 3000;
+const saltrounds = 10;
 env.config();
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 const url = "https://graphql.anilist.co";
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 const db = new pg.Client({
   user: process.env.PG_USER,
@@ -20,14 +34,6 @@ const db = new pg.Client({
   database: process.env.PG_DATABASE,
   port: process.env.PG_PORT,
 });
-
-// const db = new pg.Client({
-//   user: "postgres",
-//   host: "localhost",
-//   password: "Mannan-2005",
-//   database: "anime",
-//   port: 5432,
-// });
 
 db.connect()
 
@@ -77,6 +83,51 @@ app.get("/anime/:query", async (req, res) => {
     }
 });
 
+app.get("/login", async (req,res)=>{
+    res.render("login.ejs")
+})
+app.get("/register", (req, res) => {
+  res.render("register.ejs");
+});
+
+app.post("/register", async (req,res)=>{
+    const email = req.body.email;
+    const password = req.body.password;
+
+    try {
+       const check_user = await db.query("SELECT * FROM users WHERE email = $1",[email]);
+       if(check_user.rows.length > 0){
+        res.redirect("/login");
+       }
+       else{
+        await db.query("INSERT INTO users (email,password) VALUES ($1,$2)", [email,password]);
+        console.log("user registered successfully");
+        res.redirect("/");
+        }
+    } catch (error) {
+    console.log(error);
+    }
+
+})
+
+app.post("/login", async (req,res)=>{
+    const email = req.body.email;
+    const password = req.body.password;
+
+    try {
+       const check_user = await db.query("SELECT * FROM users WHERE email = $1 AND password = $2",[email,password]);
+       if(check_user.rows.length > 0){
+     console.log("user login successfully");
+       }
+       else{
+       console.log("user not found");
+        res.redirect("/register");
+        }
+    } catch (error) {
+    console.log(error);
+    }
+
+})
 
 app.post("/searchanime", async (req, res, next) => {
     const { search, animeId, animeName } = req.body;
