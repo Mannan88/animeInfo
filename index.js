@@ -2,21 +2,32 @@ import express from 'express'
 import axios from 'axios'
 import bodyParser from 'body-parser';
 import pg from 'pg';
+import env from "dotenv"
 
 
 const app = express();
 const port = 3000;
+env.config();
 const url = "https://graphql.anilist.co";
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+
 const db = new pg.Client({
-  user:'postgres',
-  host:'localhost',
-  password:'Mannan-2005',
-  database: 'anime',
-  port:5432
+  user: process.env.PG_USER,
+  host: process.env.PG_HOST,
+  password:  process.env.PG_PASSWORD,
+  database: process.env.PG_DATABASE,
+  port: process.env.PG_PORT,
 });
+
+// const db = new pg.Client({
+//   user: "postgres",
+//   host: "localhost",
+//   password: "Mannan-2005",
+//   database: "anime",
+//   port: 5432,
+// });
 
 db.connect()
 
